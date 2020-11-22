@@ -102,15 +102,29 @@ function onModalOpen() {
     // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 function onLeftRightPress(event) {
     let currentIndex = Number(event.target.firstElementChild.dataset.index)
-     if (event.code === 'ArrowRight') {
-               
-         largeImage.src = (currentIndex === galleryItems.length) ? galleryItems[0].original : galleryItems[currentIndex+1].original
+    if (event.code === 'ArrowRight') {
+        if (currentIndex === galleryItems.length) {
+             currentIndex = 0
+        } else {
+            currentIndex += 1
+        } 
       
     } else if (event.code === 'ArrowLeft') {
-          largeImage.src = (currentIndex === 0) ? galleryItems[galleryItems.length-1].original : galleryItems[currentIndex-1].original
+         if (currentIndex === 0) {
+             currentIndex = galleryItems.length-1
+        } else {
+            currentIndex -= 1
+        } 
+    } 
     
-    }
+    largeImage.src = galleryItems[currentIndex].original
     }
 
 
-   
+
+
+
+
+
+   //  largeImage.src = (currentIndex === galleryItems.length) ? galleryItems[0].original : galleryItems[currentIndex+1].original
+   //   largeImage.src = (currentIndex === 0) ? galleryItems[galleryItems.length-1].original : galleryItems[currentIndex-1].original
