@@ -5,7 +5,7 @@ const largeImage = document.querySelector('.lightbox__image')
 const wrapper = document.querySelector('.lightbox') 
 const overlayRef = document.querySelector('.lightbox__overlay')
 const btnClose = document.querySelector('button[data-action="close-lightbox"]')
-
+let currentIndex
 // Создание и рендер разметки по массиву данных и предоставленному шаблону.
 const createList = (array) => array.map(({preview, original, description}, index) => {
     const listItem = document.createElement('li')
@@ -40,7 +40,7 @@ function onClick (event) {
         return
     }
     
-    
+    currentIndex = Number(event.target.dataset.index)
     const lagreImageURL = event.target.dataset.source
     const lagreImageAlt = event.target.alt
     const lagreImageIndex = event.target.dataset.index
@@ -70,6 +70,7 @@ function onModalOpen() {
 
     function onModalClose() {
         window.removeEventListener('keydown', onPressEsc)
+         window.removeEventListener('keydown', onLeftRightPress)
         wrapper.classList.remove('is-open')
 
         // Очистка значения атрибута src элемента img.lightbox__image.
@@ -101,20 +102,21 @@ function onModalOpen() {
 
     // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
 function onLeftRightPress(event) {
-    let currentIndex = Number(event.target.firstElementChild.dataset.index)
+    
     if (event.code === 'ArrowRight') {
-        if (currentIndex === galleryItems.length) {
+        if (currentIndex === galleryItems.length-1) {
              currentIndex = 0
         } else {
             currentIndex += 1
         } 
-      
+        //  largeImage.src = (currentIndex === galleryItems.length) ? galleryItems[0].original : galleryItems[currentIndex+1].original
     } else if (event.code === 'ArrowLeft') {
          if (currentIndex === 0) {
              currentIndex = galleryItems.length-1
         } else {
             currentIndex -= 1
         } 
+        //   largeImage.src = (currentIndex === 0) ? galleryItems[galleryItems.length-1].original : galleryItems[currentIndex-1].original
     } 
     
     largeImage.src = galleryItems[currentIndex].original
@@ -126,5 +128,5 @@ function onLeftRightPress(event) {
 
 
 
-   //  largeImage.src = (currentIndex === galleryItems.length) ? galleryItems[0].original : galleryItems[currentIndex+1].original
-   //   largeImage.src = (currentIndex === 0) ? galleryItems[galleryItems.length-1].original : galleryItems[currentIndex-1].original
+   
+   
